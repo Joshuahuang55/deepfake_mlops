@@ -1,0 +1,56 @@
+version: '3.7'
+
+services:
+  # 1. 資料庫服務 (PostgreSQL)
+  db:
+    image: postgres:13
+    container_name: mlflow_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  # 2. 物件儲存服務 (MinIO - 模擬 AWS S3)
+  minio:
+    image: minio/minio
+    container_name: mlflow_minio
+    restart: always
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000" # API Port
+      - "9001:9001" # Console UI Port
+    volumes:
+      - minio_data:/data
+
+  # 3. MLflow Tracking Server
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.10.0
+    container_name: mlflow_server
+    restart: always
+    depends_on:
+      - db
+      - minio
+    ports:
+      - "5001:5000"
+    environment:
+      AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+      AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+      MLFLOW_S3_ENDPOINT_URL: ${MLFLOW_S3_ENDPOINT_URL}
+    # 啟動指令：告訴 MLflow 用 Postgres 記參數，用 S3 (MinIO) 存模型
+    command: >
+      sh -c "pip install boto3 psycopg2-binary && mlflow server
+      --backend-store-uri postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      --default-artifact-root s3://${MLFLOW_BUCKET_NAME}/
+      --host 0.0.0.0"
+
+volumes:
+  db_data:
+  minio_data:
