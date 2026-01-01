@@ -1,7 +1,8 @@
 # 🔍 Deepfake Detection with Explainable AI
 
 A production-ready deepfake detection system that combines advanced deep learning models (ResNet, EfficientNet, ViT) with Explainable AI (XAI) techniques for forensic analysis.
-Demo URL (Only Efficientnet) : https://xai-in-deepfake-images-recognition.streamlit.app/ 
+
+- Demo URL (Only Efficientnet) : https://xai-in-deepfake-images-recognition.streamlit.app/ 
 
 ## 🌟 Features
 
