@@ -75,3 +75,4 @@ secrets.json
 *.swo
 *~
 /dataset
+image_testing/
