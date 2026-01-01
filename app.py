@@ -14,7 +14,7 @@ st.set_page_config(page_title="Deepfake Detector", page_icon="🕵️‍♂️")
 
 # Hardcoded path to your best model
 # Ensure this matches the filename you push to GitHub
-MODEL_PATH = "models/best_finetuned.pth" 
+MODEL_PATH = "models/efficientnet_b4.pth" 
 
 # ==========================================
 # 2. Model Loading (EfficientNet-B4 Only)
