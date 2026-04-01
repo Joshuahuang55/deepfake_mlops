@@ -1,3 +1,8 @@
+# Image Processing
+opencv-python-headless>=4.8.0
+Pillow>=10.0.0
+numpy>=1.24.0
+
 # Core Deep Learning Frameworks
 torch>=2.0.0
 torchvision>=0.15.0
@@ -9,11 +14,6 @@ streamlit>=1.25.0
 
 # Storage & Database
 minio>=7.1.0
-
-# Image Processing
-opencv-python-headless>=4.8.0
-Pillow>=10.0.0
-numpy>=1.24.0
 
 # Explainable AI (XAI) 
 grad-cam>=1.4.0
